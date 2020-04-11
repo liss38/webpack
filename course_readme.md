@@ -15,6 +15,12 @@ webpack - пакет самого вебпака
 webpack-cli - консольный интерфейс для работы с вебпаком
 
 
+плагин **html-webpack-plugin**
+```
+npm i -D html-webpack-plugin
+```
+позволяет взаимодействовать с html'ем
+
 
 
 
@@ -61,6 +67,16 @@ entry: {
 }
 ```
 
+Подключение **html-webpack-plugin**
+```
+const HTMLWebpackPlugin = require(`html-webpack-plugin`);
+```
+добовляем в свойстве `plugins` (это массив/список всех плагинов, которые доступны)
+```
+plugins: [
+	new HTMLWebpackPlugin(),
+],
+```
 
 
 
@@ -124,3 +140,11 @@ Conflict: Multiple chunks emit assets to the same filename bundle.js (chunks ana
 нужно использовать такой паттерн `...   filename: '[name].[contenthash].js',   ...` вместо `[name].bundle.js`
 
 подробнее о паттернах вот здесь https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
+
+
+5). Добавление плагина в конфиг вебпака, особенность в том, что сам плагин добавляется как инстанс класса плагина, т.е. с помощью ключевого слова new с вызовом конструктора класса, т.е. 
+```
+plugins: [
+	new HTMLWebpackPlugin(),
+]
+```
