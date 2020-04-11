@@ -108,6 +108,14 @@ plugins: [
 
 
 
+свойство `context` - это обычная строчка, в которой указано, где лежат все исходники приложения
+
+```
+context: `src`,
+```
+
+
+
 
 
 
@@ -169,9 +177,15 @@ Conflict: Multiple chunks emit assets to the same filename bundle.js (chunks ana
 подробнее о паттернах вот здесь https://webpack.js.org/configuration/output/#outputdevtoolmodulefilenametemplate
 
 
+
 5). Добавление плагина в конфиг вебпака, особенность в том, что сам плагин добавляется как инстанс класса плагина, т.е. с помощью ключевого слова new с вызовом конструктора класса, т.е. 
 ```
 plugins: [
 	new HTMLWebpackPlugin(),
 ]
 ```
+
+
+
+6). Возникла проблема после установки свойства `context: path.resolve(__dirname, `src`),` вебпак не мог найти файлы в папке src, это из-за моей невнимательности:
+после указания контекста я сделал вот так `main: 'index.js'`, а нужно сделать вот так `main: './index.js'`, и так для всех ассетов
