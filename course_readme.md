@@ -67,6 +67,8 @@ entry: {
 }
 ```
 
+
+
 Подключение **html-webpack-plugin**
 ```
 const HTMLWebpackPlugin = require(`html-webpack-plugin`);
@@ -74,10 +76,35 @@ const HTMLWebpackPlugin = require(`html-webpack-plugin`);
 добовляем в свойстве `plugins` (это массив/список всех плагинов, которые доступны)
 ```
 plugins: [
-	new HTMLWebpackPlugin(),
+	new HTMLWebpackPlugin({
+		template: `./src/index.html`,
+	}),
 ],
 ```
+свойство `template` указывает откуда брать html-шаблон
 
+
+
+Плагин для очистки папки dist/  **clean-webpack-plugin**
+```
+npm i -D clean-webpack-plugin
+```
+подключается вот так:
+```
+
+...
+
+const { CleanWebpackPlugin } = require(`clean-webpack-plugin`);
+
+...
+
+plugins: [
+	new CleanWebpackPlugin(),
+]
+
+
+...
+```
 
 
 
