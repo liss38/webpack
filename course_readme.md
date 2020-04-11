@@ -15,12 +15,15 @@
 
 
 #### Перечень устанавливаемых пакетов/команд/плагинов
+(1)
 npm install -D webpack webpack-cli
 
 webpack - пакет самого вебпака
 webpack-cli - консольный интерфейс для работы с вебпаком
 
 
+
+(2)
 плагин **html-webpack-plugin**
 ```
 npm i -D html-webpack-plugin
@@ -29,6 +32,56 @@ npm i -D html-webpack-plugin
 
 
 
+(3)
+Плагин для очистки папки dist/  **clean-webpack-plugin**
+```
+npm i -D clean-webpack-plugin
+```
+
+
+
+(4) для работы с css-стилями
+**`css-loader`** - этот лоадер позволяет вебпаку понимать css-импорты и импортировать в javascript различные стили
+
+**`style-loader`** - этот лоадер добаляет стили, которые мы описываем в css-файлах в секцию `<head />` в html
+
+По умолчанию этих пактов(лоадеров) в вебпаке нет, их нужно установить отдельно:
+```
+npm i -D style-loader css-loader
+```
+
+
+
+(5)
+**file-loader** - данный лоадер позволяет работать с различными файлами, в том числе и с картинками, шрифтами
+```
+npm i -D file-loader
+```
+
+
+
+(6)
+**normalize.css**
+```
+npm i normalize.css
+```
+в style.css проекта этот пакет подключается так: `@import "~normalize.css";` (с использованием тильды)
+
+
+
+(7)
+**xml-loader** - пакет для работы с xml-файлами
+```
+npm i -D xml-loader
+```
+
+
+(8)
+**csv-loader** - для работы с csv-файлами
+```
+npm i -D csv-loader papaparse
+```
+пакет papaparse нужен для работы csv-loader'а
 
 
 
@@ -91,11 +144,8 @@ plugins: [
 
 
 
-Плагин для очистки папки dist/  **clean-webpack-plugin**
-```
-npm i -D clean-webpack-plugin
-```
-подключается вот так:
+
+Плагин **clean-webpack-plugin** подключается вот так:
 ```
 
 ...
@@ -121,7 +171,7 @@ context: `src`,
 ```
 
 
-Установка лоадеров 
+Установка лоадеров для css-стилей
 ```
 module: {
 	rules: [
@@ -137,15 +187,56 @@ module: {
 Порядок лоадеров в массиве `use` важен и определяется с права на лево
 
 
-**`css-loader`** - этот лоадер позволяет вебпаку понимать css-импорты и импортировать в javascript различные стили
-
-**`style-loader`** - этот лоадер добаляет стили, которые мы описываем в css-файлах в секцию `<head />` в html
-
-По умолчанию этих пактов(лоадеров) в вебпаке нет, их нужно установить отдельно:
+В `package.json` в поле `script` можно сделать вотчер изменений, чтобы каждый раз не запускать команду `npm run dev`:
 ```
-npm i -D style-loader css-loader
+...
+
+	"scripts": {
+		"watch": "webpack --mode development --watch"
+	}
+
+...
+```
+-> `npm run watch`
+
+
+
+
+Правило лоадера для картинок
+```
+{
+	test: /\.(png|jpg|svg|gif)$/,
+	use: [`file-loader`],
+},
 ```
 
+
+Правило лоадера для шрифтов
+```
+
+{
+	test: /\.(ttf|eot|woff|woff2)$/,
+	use: [`file-loader`],
+},
+```
+
+
+Правило для работы с xml-файлами:
+```
+{
+	test: /\.xml$/,
+	use: [`xml-loader`],
+}
+```
+
+
+Правило для работы с csv-файлами:
+```
+{
+	test: /\.csv$/,
+	use: [`csv-loader`],
+},
+```
 
 
 
