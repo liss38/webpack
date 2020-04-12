@@ -24,3 +24,9 @@ h1 {
 	width: 400px;
 	margin: 0 auto;
 }
+
+
+.code {
+	color: #f00;
+	font-weight: bold;
+}

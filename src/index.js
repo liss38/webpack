@@ -1,4 +1,5 @@
-import Post from './Post';
+import * as $ from 'jquery';
+import Post from '@models/Post';
 import './styles/style.css';
 
 // assets
@@ -13,3 +14,8 @@ console.log(` >>>>>>  post: `, post );
 console.log(` >>>>>>  pos.toString()`, post.toString() );
 console.log(` >>>>>>  data.json `, json );
 console.log(` >>>>>>  data.csv `, csv );
+
+
+
+
+$(`pre`).addClass(`code`).html(post.toString());

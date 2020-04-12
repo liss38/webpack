@@ -85,6 +85,14 @@ npm i -D csv-loader papaparse
 
 
 
+(9)
+**webpack-dev-server**
+```
+npm i -D webpack-dev-server
+```
+
+
+
 
 
 
@@ -239,6 +247,49 @@ module: {
 ```
 
 
+Свойство **resolve**
+
+поле `extensions` - здесь мы говорим вебпаку, какие расширения нужно принимать по умолчанию, те расширения, которык будут перечислены в этом массиве, можно не указывать для подключаемых файлов в импортах, т.е. например `import logo from './assets/logo'` вместо `import logo from './assets/logo.png'`
+
+поле `alias` - позволяет решить проблему с относительными путями к файлам в импортах, например теперь вместо `import Post from './../../../models/Post'` можно будет писать `import Post from '@models/Post'`
+```
+resolve: {
+	extensions: [`.js`, `.json`, `.png`],
+	alias: {
+		'@models': path.resolve(__dirname, `src/models`),
+		'@': path.resolve(__dirname, `src`),
+	},
+}
+```
+
+
+Свойство **optimization** - позволяет оптимизировать финальный бандл, условно выеосит за скобки библиотеки/скрипты, которые подключаются по нескольку раз в разных файлах, не дублируя их код(этих библиотек) в финальном бандле
+```
+optimization: {
+	splitChunks: {
+		chunks: `all`,
+	},
+}
+```
+
+
+
+Подключение **webpack-dev-server**, свойство `devServer`
+```
+devServer: {
+	port: 4200,
+}
+```
++ в скриптах запуска в package.json нужно сделать такой скрипт:
+```
+"scripts": {
+	"start": "webpack-dev-server --mode development --open"
+}
+```
+и для запуска, в консоли `npm start`
+
+
+
 
 
 
@@ -314,3 +365,6 @@ plugins: [
 
 
 7). Для лоадеров правильно писать `module:  ...`, а не `modules:  ...` , очень легко опечататься
+
+
+8). Для запуска `webpack-dev-server` в конфиге нужно писать ключ `devServer`, а не `webpackDevServer`, очень легко интуитиыно ошибиться
