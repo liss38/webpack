@@ -107,6 +107,16 @@ npm i -D mini-css-extract-plugin
 ```
 
 
+(11)
+Пакет **cross-env** - это пакет, который определяет, в какой ОС я нахожусь и самостоятельно правильно задаёт системные переменные, 
+например `"dev": "cross-env NODE_ENV=development webpack --mode development",`
+```
+npm i -D cross-env
+```
+
+
+
+
 
 
 
@@ -321,6 +331,63 @@ plugins: [
 ]
 
 ...
+```
+
+
+Подключение плагина **mini-css-extract-plugin**,
+данный плагин это не только плагин, но ещё и class, предоставляющий нам возможность добавить лоадер
+```
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+
+...
+
+
+plugins: [
+	new MiniCssExtractPlugin({
+		filename: `[name].[contenthash].css`,
+	}),
+],
+
+
+...
+
+
+module: [
+	{
+		test: /\.css$/,
+		use: [
+			{
+				hmr: true,
+				reloadAll: true,
+			},
+			`css-loader`
+		],
+	}
+],
+```
+
+опция `hmr` - это от hot module replacement
+
+
+
+Установка переменной isDev для манипулирования опциями сборки в зависимости от development или production:
+
+для начала нужно установить пакет `cross-env`, 
+затем в Package.json в скриптах добавить этот пакет с установленным параметром NODE_ENV в значение development(или production)
+
+```
+"scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --mode development",
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
+ },
+```
+
+и в конфиге добавить переменныю-флаг isDev:
+```
+const isDev = process.env.NODE_ENV === `development`;
 ```
 
 
