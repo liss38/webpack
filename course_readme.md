@@ -92,13 +92,28 @@ npm i -D webpack-dev-server
 ```
 
 
+(9)
+**copy-webpack-plugin** - плагин автоматизации копирования статических файлов в нужную папку
+```
+npm i -D copy-webpack-plugin
+```
+
+
+(10)
+**mini-css-extract-plugin** - плагин для создания стилей в отдельный Css-файл(а не хранение их в тэге `<style />` в хэде html-ника)
+https://webpack.js.org/plugins/mini-css-extract-plugin/
+```
+npm i -D mini-css-extract-plugin
+```
+
+
 
 
 
 
 >>>>>
 
-ключ `-D` - это devDependencies, данные пакеты нужны для процесса разработки и не пойдут в финальную сборку
+ключ `-D` - это devDependencies, данные пакеты нужны для процесса разработки и не пойдут в финальную сборку (`--save-dev` синоним для этого ключа)
 
 
 
@@ -287,6 +302,26 @@ devServer: {
 }
 ```
 и для запуска, в консоли `npm start`
+
+
+
+Подключение плагина для автоматического копирования статических ассетов **copy-webpack-plugin**:
+```
+const CopyWebpackPlugin = require('cope-webpack-plugin');
+
+...
+
+plugins: [
+	new CopyWebpackPlugin([
+		{
+			from: path.resolve(__dirname, `src/assets/favicon.ico`),
+			to: path.resolve(__dirname, `dist`),
+		}
+	]),
+]
+
+...
+```
 
 
 
