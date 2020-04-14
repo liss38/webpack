@@ -181,6 +181,34 @@ npm i -D optimize-css-assets-webpack-plugin
 ```
 
 
+(14)
+**less-loader**
+```
+npm i -D less-loader
+```
+
+
+(15)
+**less**
+```
+npm i -D less
+```
+
+
+(16)
+**node-sass** - содержит в себе корневой функционал, который относится к препроцессору sass и scss
+```
+npm i -D node-sass
+```
+
+
+(17)
+**sass-loader** - лоадер для вебпака
+```
+npm i -D sass-loader
+```
+
+
 
 
 
@@ -472,7 +500,7 @@ https://github.com/jantimon/html-webpack-plugin#options
 
 
 
-Для оптимизации css и js нужно подключить два плагина **terser-webpack-plugin** и **optimize-css-assets-webpack-plugin** , нужно учесть условие, чтобы эти плагины сработали только для продакшн-сборки, т.е. для !isDev (npm run build). Для этого нужно гприсать функцию `optimization()`, которая возвращает объект нужного конфига в заивисмости от production/development контекста. Результат вызова этой функции поместить в свойство `optimization`:
+Для оптимизации css и js нужно подключить два плагина **terser-webpack-plugin** и **optimize-css-assets-webpack-plugin** , нужно учесть условие, чтобы эти плагины сработали только для продакшн-сборки, т.е. для !isDev (npm run build). Для этого нужно гприсать функцию `optimization()`, которая возвращает объект нужного конфига в заивисмости от production/development режима. Результат вызова этой функции поместить в свойство `optimization`:
 ```
 ...
 
@@ -510,6 +538,126 @@ optimization: optimization(),
 
 ...
 ```
+
+
+
+Для работы с LESS нужно установить пакеты **less-loader** и 
+**less** и добавить правило лоадера для обработки less-файлов
+```
+...
+
+
+rules: [
+	{
+		test: /\.less$/,
+		use: [
+			{
+				loader: MiniCssExtractPlugin.loader,
+				options: {
+					hmr: isDev,
+					reloadAll: true,
+				}
+			}, 
+			`css-loader`,
+			`less-loader`,
+		],
+	},
+],
+
+
+...
+```
+
+
+
+Можно сделать такую функцию:
+```
+const filename = (ext) => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+```
+результат выполнения которой поместить в значение для всех ключей `filename`. Эта функция в зависимости от режима `isDev` будет возвращать "нормальное" либо захэшенное имя ассета с учетом расширения для типа файла этого ассета.
+
+
+
+
+
+Для работы с **SASS** необходимо установить два пакета **node-sass** и **sass-loader**, затем в конфиге добавить правило для sass/scss-файлов
+```
+...
+
+rules: [
+	{
+		test: /\.s[ac]ss$/,
+		use: [
+			{
+				loader: MiniCssExtractPlugin.loader,
+				options: {
+					hmr: isDev,
+					reloadAll: true,
+				}
+			}, 
+			`css-loader`,
+			`sass-loader`,
+		],
+	},
+],
+
+...
+```
+
+
+Для `DRY`-подхода в css/less/sass лоадерах можно выделить общие элементы и написать функцию `cssLoaders()`:
+```
+...
+
+
+
+const cssLoaders = (additionalLoader) => {
+	const loaders = [
+		{
+			loader: MiniCssExtractPlugin.loader,
+			options: {
+				hmr: isDev,
+				reloadAll: true,
+			}
+		},
+		`css-loader`,
+	];
+
+	if(additionalLoader) {
+		loaders.push(additionalLoader);
+	}
+
+	return loaders;
+};
+
+
+
+...
+
+
+
+rules: [
+	{
+		test: /\.css$/,
+		use: cssLoaders(),
+	},
+	{
+		test: /\.less$/,
+		use: cssLoaders(`less-loader`),
+	},
+	{
+		test: /\.s[ac]ss$/,
+		use: cssLoaders(`sass-loader`),
+	},
+],
+
+
+
+
+...
+``` 
+
+
 
 
 

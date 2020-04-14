@@ -1,0 +1,15 @@
+$border: 1px solid #f1f1f1;
+
+.card {
+	padding: 10px;
+	margin: 50px;
+	border: $border;
+	background-color: #555;
+
+	h2 {
+		text-align: center;
+		text-decoration: underline;
+		font-size: 19px;
+		color: #f0f0f0;
+	}
+}

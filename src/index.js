@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import Post from '@models/Post';
 import './styles/style.css';
+import './styles/box.less';
+import './styles/scss.scss';
 
 // assets
 import json from './assets/data';
