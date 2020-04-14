@@ -165,6 +165,22 @@ npm i -D cross-env
 ```
 
 
+(12)
+**terser-webpack-plugin** - плагин минифицирует и uglify'ет js
+-> https://webpack.js.org/plugins/terser-webpack-plugin/
+```
+npm i -D terser-webpack-plugin
+```
+
+
+(13)
+**optimize-css-assets-webpack-plugin** - плагин для оптимизации и минификации css-файлов
+-> https://www.npmjs.com/package/optimize-css-assets-webpack-plugin
+```
+npm i -D optimize-css-assets-webpack-plugin
+```
+
+
 
 
 
@@ -438,6 +454,61 @@ module: [
 и в конфиге добавить переменныю-флаг isDev:
 ```
 const isDev = process.env.NODE_ENV === `development`;
+```
+
+
+Для минификации index.html(и др. html-файлов) для плагина **`HTMLWebpackPlugin`** добавить опции в поле `minify`:
+```
+new HTMLWebpackPlugin({
+	template: `./index.html`,
+	minify: {
+		collapseWhitespace: !isDev,
+		removeComments: !isDev,
+	},
+}),
+```
+минификация html'ников будет работать только для сборки продакшна благодаря флагу `!isDev`, доп. инфа по опциям минификации -> https://github.com/jantimon/html-webpack-plugin#minification, 
+https://github.com/jantimon/html-webpack-plugin#options
+
+
+
+Для оптимизации css и js нужно подключить два плагина **terser-webpack-plugin** и **optimize-css-assets-webpack-plugin** , нужно учесть условие, чтобы эти плагины сработали только для продакшн-сборки, т.е. для !isDev (npm run build). Для этого нужно гприсать функцию `optimization()`, которая возвращает объект нужного конфига в заивисмости от production/development контекста. Результат вызова этой функции поместить в свойство `optimization`:
+```
+...
+
+const OptimizeCssAssetsWebpackPlugin = require(`optimize-css-assets-webpack-plugin`);
+const TerserWebpackPlugin = require(`terser-webpack-plugin`);
+
+
+...
+
+
+const optimization = () => {
+	const config = {
+		splitChunks: {
+			chunks: `all`,
+		},
+	};
+
+	if(!isDev) {
+		config.minimizer = [
+			new OptimizeCssAssetsWebpackPlugin(),
+			new TerserWebpackPlugin(),
+		];
+	}
+
+	return config;
+}
+
+
+...
+
+
+
+optimization: optimization(),
+
+
+...
 ```
 
 
