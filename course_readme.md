@@ -265,6 +265,15 @@ npm i -D  @babel/plugin-proposal-class-properties
 
 
 
+(22)
+**@babel/preset-typescript** - пресет для работы с typescript'ом
+-> https://babeljs.io/docs/en/babel-preset-typescript
+```
+npm i -D @babel/preset-typescript
+```
+
+
+
 
 
 
@@ -770,6 +779,29 @@ entry: {
 	},
 },
 ```
+
+
+
+Для компиляци ts-файлов нужно добавить такое правило:
+```
+{
+	test: /\.ts$/,
+	exclude: /node_modules/,
+	loader: {
+		loader: `babel-loader`,
+		options: {
+			presets: [
+				`@babel/preset-env`,
+				`@babel/preset-typescript`,
+			],
+			plugins: [
+				`@babel/plugin-proposal-class-properties`,
+			],
+		},
+	},
+},
+```
+
 
 
 
