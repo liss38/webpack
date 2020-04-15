@@ -10,6 +10,12 @@ import WebpackLogo from './assets/webpack-logo.png';
 import xml from './assets/data.xml';
 import csv from './assets/data.csv';
 
+
+// babel
+import '@/babel';
+
+
+
 const post = new Post(`Webpack post title`, WebpackLogo);
 
 console.log(` >>>>>>  post: `, post );

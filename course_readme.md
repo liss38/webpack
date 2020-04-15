@@ -54,11 +54,35 @@ https://www.youtube.com/watch?v=eSaF8NXeNsA
 
 Плагины - это дополнительный функционал в виде классов, который можно добалвять к базовой конфигурации webpack'а. 
 
+
 Сам по себе webpack умеет работать только с js-файлами, 
 он ничего не знает ни про css, ни про картинки, ..., 
 только js и json. Для других файлов необходимо устанавливать лоадеры.
 
+
 Лоадеры(свойство `module`) - это возможность добавления к webpack'у функционала, позволяющего ему работать с другими типами файлов, например css, картинки, ... .
+
+
+**Babel** - благодаря компилятору babel можно использовать новые фичи JS'а(ES), которые ещё не будут работать в браузере(async/await, ...), при этом babel будет их компилировать(транспайлить), т.е. переводить в тот JS, который понимают все браузеры.
+-> https://babeljs.io/
+
+
+**Пресеты**
+-> https://babeljs.io/docs/en/presets
+Пресет - это набор определённых плагинов, которые за нас уже собрали.
+Например пресет `@babel/preset-env`, -> https://babeljs.io/docs/en/babel-preset-env . Список офиц. юзабельных пресетов:
+```
+@babel/preset-env
+
+@babel/preset-flow
+
+@babel/preset-react
+
+@babel/preset-typescript
+```
+Тут группированный список плагинов, которые могут быть включены в пресеты
+-> https://babeljs.io/docs/en/plugins
+
 
 
 
@@ -207,6 +231,29 @@ npm i -D node-sass
 ```
 npm i -D sass-loader
 ```
+
+
+(18)
+**babel** - это JavaScript compiler. С ним можно использовать код JS следущего поколения уже сейчас.
+-> https://babeljs.io/setup
+```
+npm i -D babel-loader @babel/core
+```
+
+
+(19)
+**@babel/preset-env** - пресет(набор плагинов) для "бабеля", который позволяет пользоваться самими последними фишками ES/JS
+```
+npm i -D @babel/preset-env
+```
+
+
+(20)
+**@babel/polyfill** - пакет "бабеля" для эмуляции полноценного ES2015
+```
+npm i @babel/polyfill
+```
+
 
 
 
@@ -655,7 +702,45 @@ rules: [
 
 
 ...
-``` 
+```
+
+
+
+Добавление **Babel**
+Для babel нужно установить два пакета `babel-loader`, `@babel/core` и пресет `@babel/preset-env` для работы с последними фичам ES/JS в dev-зависимости.
+Далее добавить такое правило:
+```
+module: {
+  rules: [
+    {
+    	test: /\.js$/,
+    	exclude: /node_modules/,
+    	loader: {
+    		loader: `babel-loader`,
+    		options: {
+    			presets: [
+    				`@babel/preset-env`
+    			],
+    		},
+    	}
+    }
+  ]
+}
+```
+
+Затем нужно установить пакет `@babel/polyfill` для синтаксиса ES2015+, чтобы не было проблем в браузере и подключить его в вебпак-конфиг:
+```
+...
+
+
+entry: {
+	main: [`@babel/polyfill`, `./index.js`],
+},
+
+
+...
+```
+и после сборки тогда заработает async/await и др. ES-последний синтаксис.
 
 
 
@@ -739,3 +824,6 @@ plugins: [
 
 
 8). Для запуска `webpack-dev-server` в конфиге нужно писать ключ `devServer`, а не `webpackDevServer`, очень легко интуитиыно ошибиться
+
+
+9). Возникла ошибка `Uncaught ReferenceError: regeneratorRuntime is not defined` при использовании **async/await**, чтобы не было этой проблемы нужно для babel установить полифил `npm install --save @babel/polyfill`
