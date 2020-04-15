@@ -256,6 +256,15 @@ npm i @babel/polyfill
 
 
 
+(21)
+**@babel/plugin-proposal-class-properties** - плагин для proposal синтаксиса для class properties в JS/ES, например такого `static id = Date.now()`
+-> https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
+```
+npm i -D  @babel/plugin-proposal-class-properties
+```
+
+
+
 
 
 
@@ -742,6 +751,25 @@ entry: {
 ```
 и после сборки тогда заработает async/await и др. ES-последний синтаксис.
 
+
+Для поддержки экспериментального/предлагаемого/proposal синтаксиса ES Next обновим правило для "бабеля"
+```
+{
+	test: /\.js$/,
+	exclude: /node_modules/,
+	loader: {
+		loader: `babel-loader`,
+		options: {
+			presets: [
+				`@babel/preset-env`,
+			],
+			plugins: [
+				`@babel/plugin-proposal-class-properties`,
+			],
+		},
+	},
+},
+```
 
 
 
