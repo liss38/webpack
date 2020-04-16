@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require(`copy-webpack-plugin`);
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
 const OptimizeCssAssetsWebpackPlugin = require(`optimize-css-assets-webpack-plugin`);
 const TerserWebpackPlugin = require(`terser-webpack-plugin`);
+const WebpackBundleAnalyzerPlugin = require(`webpack-bundle-analyzer`).BundleAnalyzerPlugin;
 
 
 const isDev = process.env.NODE_ENV === `development`;
@@ -80,6 +81,34 @@ const jsLoaders = () => {
 	return loaders;
 };
 
+const plugins = () => {
+	const base = [
+		new HTMLWebpackPlugin({
+			template: `./index.html`,
+			minify: {
+				collapseWhitespace: !isDev,
+				removeComments: !isDev,
+			},
+		}),
+		new CleanWebpackPlugin(),
+		new CopyWebpackPlugin([
+			{
+				from: path.resolve(__dirname, `src/assets/favicon.ico`),
+				to: path.resolve(__dirname, `dist`),
+			}
+		]),
+		new MiniCssExtractPlugin({
+			filename: filename(`css`),
+		}),
+	];
+
+	if(!isDev) {
+		base.push(new WebpackBundleAnalyzerPlugin());
+	}
+
+	return base;
+};
+
 
 module.exports = {
 	context: path.resolve(__dirname, `src`),
@@ -105,25 +134,7 @@ module.exports = {
 		hot: isDev,
 	},
 	devtool: isDev ? `source-map`: ``,
-	plugins: [
-		new HTMLWebpackPlugin({
-			template: `./index.html`,
-			minify: {
-				collapseWhitespace: !isDev,
-				removeComments: !isDev,
-			},
-		}),
-		new CleanWebpackPlugin(),
-		new CopyWebpackPlugin([
-			{
-				from: path.resolve(__dirname, `src/assets/favicon.ico`),
-				to: path.resolve(__dirname, `dist`),
-			}
-		]),
-		new MiniCssExtractPlugin({
-			filename: filename(`css`),
-		}),
-	],
+	plugins: plugins(),
 	module: {
 		rules: [
 			{

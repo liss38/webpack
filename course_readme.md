@@ -324,6 +324,15 @@ npm i lodash
 ```
 
 
+(27)
+**webpack-bundle-analyzer** - Visualize size of webpack output files with an interactive zoomable treemap. (помогает в оптимизации приложения, позволяет анализировать приложениние, его библиотеки, показывает инфографику производительности и потенциальных улучшений)
+-> https://www.npmjs.com/package/webpack-bundle-analyzer
+-> https://github.com/webpack-contrib/webpack-bundle-analyzer
+```
+npm i -D webpack-bundle-analyzer
+```
+
+
 
 
 
@@ -931,6 +940,68 @@ const jsLoaders = () => {
 	use: jsLoaders(),
 },
 ```
+
+
+
+
+Подключим плагин **webpack-bundle-analyzer**
+```
+const WebpackBundleAnalyzerPlugin = require(`webpack-bundle-analyzer`).BundleAnalyzerPlugin;
+```
+
+напишем функцию `plugins()` динамического подключения плагинов, которая для production-сборки будет дополнительно запускать **webpack-bundle-analyzer** на http://127.0.0.1:8888/
+```
+...
+
+
+
+const plugins = () => {
+	const base = [
+		new HTMLWebpackPlugin({
+			template: `./index.html`,
+			minify: {
+				collapseWhitespace: !isDev,
+				removeComments: !isDev,
+			},
+		}),
+		new CleanWebpackPlugin(),
+		new CopyWebpackPlugin([
+			{
+				from: path.resolve(__dirname, `src/assets/favicon.ico`),
+				to: path.resolve(__dirname, `dist`),
+			}
+		]),
+		new MiniCssExtractPlugin({
+			filename: filename(`css`),
+		}),
+	];
+
+	if(!isDev) {
+		base.push(new WebpackBundleAnalyzerPlugin());
+	}
+
+	return base;
+};
+
+
+
+...
+
+
+
+plugins: plugins(),
+
+
+
+...
+```
+
+
+В `package.json` добавим скрипт stats 
+```
+"stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json"
+```
+который результат выполнения команды `webpack --json` запишет в файл stats.json и запустит плагин `webpack-bundle-analyzer` на основе содержимого stats.json
 
 
 
