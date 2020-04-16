@@ -12,3 +12,9 @@ class Util {
 }
 
 console.log(` >>>>>>>  Util.id :: `, Util.id);
+console.log(unUsedVar);
+
+
+import(`lodash`).then( (_) => {
+	console.log('Lodash', _.random(0, 42, true) );
+});

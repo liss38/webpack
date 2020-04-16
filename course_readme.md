@@ -906,6 +906,31 @@ devtool: isDev ? `source-map`: ``,
 	]
 }
 ```
+далее сделаем ф-ю `jsLoaders()` в которой eslint-loader запускается только в режиме isDev
+```
+const jsLoaders = () => {
+	const loaders = [
+		{
+			loader: `babel-loader`,
+			options: babelOptions(),
+		}
+	];
+
+	if(isDev) {
+		loaders.push(`eslint-loader`);
+	}
+
+	return loaders;
+};
+```
+и в правилах для js-файлов сделать так:
+```
+{
+	test: /\.js$/,
+	exclude: /node_modules/,
+	use: jsLoaders(),
+},
+```
 
 
 
