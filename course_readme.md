@@ -274,6 +274,31 @@ npm i -D @babel/preset-typescript
 
 
 
+(23)
+**@babel/preset-react** - набор плагинов для работы с реактом
+-> https://babeljs.io/docs/en/babel-preset-react,
+``` вот такой состав пресета
+@babel/plugin-syntax-jsx
+@babel/plugin-transform-react-jsx
+@babel/plugin-transform-react-display-name
+@babel/plugin-transform-react-jsx-self
+@babel/plugin-transform-react-jsx-source
+```
+
+```
+npm i -D @babel/preset-react
+```
+
+
+
+
+(24)
+**react** - базовые пакеты для работы реакта
+```
+npm i react react-dom
+```
+
+
 
 
 
@@ -800,6 +825,29 @@ entry: {
 		},
 	},
 },
+```
+
+
+
+Сделаем небольшую оптимизацию для подключения пресетов.
+Напишем функцию `babelOptions()`
+```
+const babelOptions = (preset) => {
+	const options = {
+		presets: [
+			`@babel/preset-env`,
+		],
+		plugins: [
+			`@babel/plugin-proposal-class-properties`,
+		],
+	};
+
+	if(preset) {
+		options.presets.push(preset);
+	}
+
+	return options;
+};
 ```
 
 
