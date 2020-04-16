@@ -308,6 +308,24 @@ npm i react react-dom
 
 
 
+(25)
+**eslint** - для eslinter'а установить два пакета `eslint`, `eslint-loader`, `babel-eslint` и затем настроить файл `.eslintrc` с конфигой для eslint'а
+```
+npm i -D eslint eslint-loader babel-eslint
+```
+
+
+
+(26)
+**lodash** - A modern JavaScript utility library delivering modularity, performance & extras.
+-> https://lodash.com/
+```
+npm i lodash
+```
+
+
+
+
 
 
 
@@ -859,12 +877,35 @@ const babelOptions = (preset) => {
 ```
 
 
+
+
 Пример подключения соурсмапов для дев-сборки
 ```
 devtool: isDev ? `source-map`: ``,
 ```
 -> https://webpack.js.org/configuration/devtool/
 
+
+
+
+Подключение и настройка **eslint**
+В дев-зависимости установить три пакета `eslint`, `eslint-loader`,  `babel-eslint`,
+затем в корне проекта сделать фвйл-конфиг `.eslintrc` для eslint'а с такими настройками:
+```
+{
+	"parser": "babel-eslint",
+	"rules": {
+		"no-unused-vars": "warn"
+	},
+	"env": {
+		"es6": true,
+		"browser": true
+	},
+	"extends": [
+		"eslint:recommended"
+	]
+}
+```
 
 
 

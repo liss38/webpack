@@ -4,6 +4,8 @@ async function start() {
 
 start().then(console.log);
 
+const unUsedVar = [];
+
 
 class Util {
 	static id = Date.now()
