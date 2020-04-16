@@ -84,6 +84,14 @@ https://www.youtube.com/watch?v=eSaF8NXeNsA
 -> https://babeljs.io/docs/en/plugins
 
 
+Описание основных идей вебпака -> https://webpack.js.org/concepts/
+(Entry, Output, Loaders, Plugins, Mode, Browser Compatibility)
+
+
+**DevTool** - настройка для source-map'ов, которые можно добавлять
+-> https://webpack.js.org/configuration/devtool/
+
+
 
 
 
@@ -849,6 +857,14 @@ const babelOptions = (preset) => {
 	return options;
 };
 ```
+
+
+Пример подключения соурсмапов для дев-сборки
+```
+devtool: isDev ? `source-map`: ``,
+```
+-> https://webpack.js.org/configuration/devtool/
+
 
 
 
